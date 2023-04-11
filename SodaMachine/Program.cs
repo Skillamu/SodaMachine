@@ -94,7 +94,7 @@ namespace SodaMachine
         {
             Console.Clear();
             Console.WriteLine("--- BRUSAUTOMAT ---\n");
-            ShowAllProductsAndPrices();
+            _machine.ShowAllProductsAndPrices();
             Console.WriteLine($"\nPenger i brusmaskinen: {_machineBalance}kr");
             Console.WriteLine($"Din saldo: {_accountBalance}kr\n");
             Console.WriteLine("Skriv inn en kronemynt (1, 5, 10, 20) for å legge til penger i brusmaskinen.");
@@ -105,16 +105,11 @@ namespace SodaMachine
         {
             Console.Clear();
             Console.WriteLine("--- BRUSAUTOMAT ---\n");
-            ShowAllProductsAndPrices();
+            _machine.ShowAllProductsAndPrices();
             Console.WriteLine($"\nPenger i brusmaskinen: {_machineBalance}kr\n");
             Console.WriteLine("Skriv inn nummeret til produktet du vil kjøpe.");
             Console.WriteLine("Skriv inn display1 for å bytte til skjermen der du legger inn penger i brusmaskinen.");
             Console.WriteLine("Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.");
-        }
-
-        static void ShowAllProductsAndPrices()
-        {
-            _machine.ShowAllProductsAndPrices();
         }
     }
 }
