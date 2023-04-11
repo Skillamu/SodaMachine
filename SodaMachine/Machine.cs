@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SodaMachine
 {
-    internal class StockHolding
+    internal class Machine
     {
         public Drink[] Drinks;
 
-        public StockHolding()
+        public Machine()
         {
             Drinks = new Drink[]
             {
@@ -33,6 +34,11 @@ namespace SodaMachine
         public int GetPriceOfProduct(int index)
         {
             return Drinks[index].Price;
+        }
+
+        public string GetNameOfProduct(int index)
+        {
+            return Drinks[index].Name;
         }
 
         /*public void ReduceQuantityOfProduct(int index)

@@ -7,6 +7,7 @@ namespace SodaMachine
         private static int _currentDisplay = 1;
         private static int _machineBalance = 0;
         private static int _accountBalance = 100;
+        private static Machine _machine = new Machine();
 
         static void Main(string[] args)
         {
@@ -31,7 +32,7 @@ namespace SodaMachine
                         if ((_accountBalance - deposit) < 0)
                         {
                             DisplayOne();
-                            Console.WriteLine("Du har ikke nok penger på konto...");
+                            Console.WriteLine("\nDu har ikke nok penger på konto...");
                             Thread.Sleep(2000);
                         }
                         else
@@ -46,7 +47,7 @@ namespace SodaMachine
                 {
                     DisplayTwo();
                     var input = Console.ReadLine();
-                    while (input != "01" && input != "02" && input != "03" && input != "display1")
+                    while (input != "01" && input != "02" && input != "03" && input != "display1" && input != "avslutt")
                     {
                         DisplayTwo();
                         input = Console.ReadLine();
@@ -55,20 +56,34 @@ namespace SodaMachine
                     {
                         _currentDisplay = 1;
                     }
+                    else if (input == "avslutt")
+                    {
+                        _accountBalance += _machineBalance;
+                        Console.WriteLine($"\nDu fikk tilbake {_machineBalance}kr.");
+                        Console.WriteLine($"Din saldo: {_accountBalance}kr.");
+                        Console.WriteLine("\nHa en fin dag!");
+                        Thread.Sleep(5000);
+                        break;
+                    }
                     else
                     {
-                        var stockHolding = new StockHolding();
                         var productNum = Convert.ToInt32(input);
                         var productIndex = (productNum - 1);
-                        if (_machineBalance - stockHolding.GetPriceOfProduct(productIndex) < 0)
+                        if (_machineBalance - _machine.GetPriceOfProduct(productIndex) < 0)
                         {
                             DisplayTwo();
-                            Console.WriteLine("Det er ikke lagt inn nok penger i maskinen for å kjøpe dette produktet...");
+                            Console.WriteLine("\nDet er ikke lagt inn nok penger i maskinen for å kjøpe dette produktet...");
                             Thread.Sleep(2000);
                         }
                         else
                         {
-                            // Legge til logikk her
+                            _machineBalance -= _machine.GetPriceOfProduct(productIndex);
+                            DisplayTwo();
+
+                            var productName = _machine.GetNameOfProduct(productIndex);
+                            var productPrice = _machine.GetPriceOfProduct(productIndex);
+                            Console.WriteLine($"\nDu kjøpte en {productName} til {productPrice}kr.");
+                            Thread.Sleep(2000);
                         }
                     }
                 }
@@ -78,23 +93,28 @@ namespace SodaMachine
         static void DisplayOne()
         {
             Console.Clear();
-            Console.WriteLine("DISPLAY 1\n");
+            Console.WriteLine("--- BRUSAUTOMAT ---\n");
+            ShowAllProductsAndPrices();
+            Console.WriteLine($"\nPenger i brusmaskinen: {_machineBalance}kr");
             Console.WriteLine($"Din saldo: {_accountBalance}kr\n");
-            Console.WriteLine($"Antall penger i brusmaskinen: {_machineBalance}kr\n");
-            Console.WriteLine("Skriv inn en kronemynt (1, 5, 10, 20) for å legge inn penger i brusmaskinen.");
-            Console.WriteLine("Skriv inn display2 for å bytte til menyen der du kan kjøpe drikke.");
+            Console.WriteLine("Skriv inn en kronemynt (1, 5, 10, 20) for å legge til penger i brusmaskinen.");
+            Console.WriteLine("Skriv inn display2 for å bytte til skjermen der du velger og kjøper drikke.");
         }
 
         static void DisplayTwo()
         {
-            var stockHolding = new StockHolding();
             Console.Clear();
-            Console.WriteLine("DISPLAY 2\n");
-            stockHolding.ShowAllProductsAndPrices();
-            Console.WriteLine($"Din saldo: {_accountBalance}kr\n");
-            Console.WriteLine($"Antall penger i brusmaskinen: {_machineBalance}kr\n");
+            Console.WriteLine("--- BRUSAUTOMAT ---\n");
+            ShowAllProductsAndPrices();
+            Console.WriteLine($"\nPenger i brusmaskinen: {_machineBalance}kr\n");
             Console.WriteLine("Skriv inn nummeret til produktet du vil kjøpe.");
-            Console.WriteLine("Skriv inn display1 for å bytte til menyen der du setter inn penger");
+            Console.WriteLine("Skriv inn display1 for å bytte til skjermen der du legger inn penger i brusmaskinen.");
+            Console.WriteLine("Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.");
+        }
+
+        static void ShowAllProductsAndPrices()
+        {
+            _machine.ShowAllProductsAndPrices();
         }
     }
 }
