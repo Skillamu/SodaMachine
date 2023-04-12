@@ -8,7 +8,6 @@ namespace SodaMachine
 {
     internal class StockHolding
     {
-        public int Cash { get; private set; }
         public Drink[] Drinks { get; private set; }
 
         public StockHolding()
@@ -20,16 +19,6 @@ namespace SodaMachine
                 new Drink("Villa", 10, 10),
                 new Drink("Pepsi", 30, 10)
             };
-        }
-
-        public void DecreaseCash(int amount)
-        {
-            Cash -= amount;
-        }
-
-        public void IncreaseCash(int amount)
-        {
-            Cash += amount;
         }
     }
 }

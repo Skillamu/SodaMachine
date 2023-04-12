@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ namespace SodaMachine
     internal class Machine
     {
         private StockHolding _stockHolding;
+        public int Cash { get; private set; }
         public int CurrentDisplay { get; private set; }
 
         public Machine(StockHolding stockHolding)
@@ -49,7 +51,8 @@ namespace SodaMachine
             Console.Clear();
             Console.WriteLine("----- BRUSAUTOMAT -----\n");
             ShowAllProductsAndPrices();
-            Console.WriteLine($"\nPenger i brusmaskinen: {_stockHolding.Cash}kr\n");
+            Console.WriteLine($"\nPenger i brusmaskinen: {Cash}kr\n");
+            ShowInstruction();
         }
 
         public void ShowInstruction()
@@ -67,6 +70,16 @@ namespace SodaMachine
                 Console.WriteLine("Skriv inn display1 for å bytte til skjermen der du legger inn penger i brusmaskinen.");
                 Console.WriteLine("Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.\n");
             }
+        }
+
+        public void DecreaseCash(int amount)
+        {
+            Cash -= amount;
+        }
+
+        public void IncreaseCash(int amount)
+        {
+            Cash += amount;
         }
 
         public bool ValidInput(string input)
