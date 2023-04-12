@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace SodaMachine
 {
-    internal class Account
+    internal class StockHolding
     {
         public int Cash { get; private set; }
+        public Drink[] Drinks { get; private set; }
 
-        public Account()
+        public StockHolding()
         {
-            Cash = 100;
+            Drinks = new Drink[]
+            {
+                new Drink("Coca Cola", 20, 10),
+                new Drink("Fanta", 5, 10),
+                new Drink("Villa", 10, 10),
+                new Drink("Pepsi", 30, 10)
+            };
         }
 
         public void DecreaseCash(int amount)
