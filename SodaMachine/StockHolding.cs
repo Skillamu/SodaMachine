@@ -14,10 +14,10 @@ namespace SodaMachine
         {
             Drinks = new Drink[]
             {
-                new Drink("Coca Cola", 20, 10),
-                new Drink("Fanta", 5, 10),
-                new Drink("Villa", 10, 10),
-                new Drink("Pepsi", 30, 10)
+                new Drink("Coca Cola", 20),
+                new Drink("Fanta", 5),
+                new Drink("Villa", 10),
+                new Drink("Pepsi", 30),
             };
         }
     }

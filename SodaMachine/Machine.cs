@@ -12,12 +12,10 @@ namespace SodaMachine
     {
         private StockHolding _stockHolding;
         public int Cash { get; private set; }
-        public int CurrentDisplay { get; private set; }
 
         public Machine(StockHolding stockHolding)
         {
             _stockHolding = stockHolding;
-            CurrentDisplay = 1;
         }
 
         private void ShowAllProductsAndPrices()
@@ -57,19 +55,10 @@ namespace SodaMachine
 
         public void ShowInstruction()
         {
-            if (CurrentDisplay == 1)
-            {
-                Console.WriteLine("\n----- DISPLAY 1 -----\n");
-                Console.WriteLine("Skriv inn en kronemynt (1, 5, 10, 20) for å legge inn penger i brusmaskinen.");
-                Console.WriteLine("Skriv inn display2 for å bytte til skjermen der du velger og kjøper drikke.");
-            }
-            else
-            {
-                Console.WriteLine("\n----- DISPLAY 2 -----\n");
-                Console.WriteLine("Skriv inn nummeret til produktet du vil kjøpe.");
-                Console.WriteLine("Skriv inn display1 for å bytte til skjermen der du legger inn penger i brusmaskinen.");
-                Console.WriteLine("Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.\n");
-            }
+            Console.WriteLine("\n----- INSTRUKSJON -----\n");
+            Console.WriteLine("- Skriv inn en kronemynt (1, 5, 10, 20) for å legge inn penger i brusmaskinen.");
+            Console.WriteLine("- Skriv inn nummeret på produktet du vil kjøpe.");
+            Console.WriteLine("- Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.\n");
         }
 
         public void DecreaseCash(int amount)
@@ -82,7 +71,7 @@ namespace SodaMachine
             Cash += amount;
         }
 
-        public bool ValidInput(string input)
+        /*public bool ValidInput(string input)
         {
             var validInputs = GetArrayOfValidInputsForCurrentDisplay();
 
@@ -91,30 +80,21 @@ namespace SodaMachine
 
         private string[] GetArrayOfValidInputsForCurrentDisplay()
         {
-            if (CurrentDisplay == 1)
+            var validInputs = new List<string>()
             {
-                var validInputs = new[] { "20", "10", "5", "1", "display2" };
+                "20",
+                "10",
+                "5",
+                "1",
+                "avslutt",
+            };
 
-                return validInputs;
-            }
-            else
+            for (int i = 0; i < _stockHolding.Drinks.Length; i++)
             {
-                var validInputs = new List<string>();
-
-                for (int i = 0; i < _stockHolding.Drinks.Length; i++)
-                {
-                    validInputs.Add($"0{i + 1}");
-                }
-                validInputs.Add("display1");
-                validInputs.Add("avslutt");
-
-                return validInputs.ToArray();
+                validInputs.Add($"0{i + 1}");
             }
-        }
 
-        public void ChangeDisplay()
-        {
-            CurrentDisplay = CurrentDisplay == 1 ? 2 : 1;
-        }
+            return validInputs.ToArray();
+        }*/
     }
 }

@@ -10,18 +10,11 @@ namespace SodaMachine
     {
         public string Name { get; }
         public int Price { get; }
-        public int Quantity { get; private set; }
 
-        public Drink(string name, int price, int quantity)
+        public Drink(string name, int price)
         {
             Name = name;
             Price = price;
-            Quantity = quantity;
         }
-
-        /*public void ReduceQuantity()
-        {
-            Quantity--;
-        }*/
     }
 }

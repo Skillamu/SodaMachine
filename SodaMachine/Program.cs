@@ -7,92 +7,79 @@ namespace SodaMachine
     {
         static void Main(string[] args)
         {
-            var account = new Account();
             var stockHolding = new StockHolding();
             var machine = new Machine(stockHolding);
 
+            var depositCommand = new DepositCommand();
+            var exitCommand = new ExitCommand();
+            var buyCommand = new BuyCommand(stockHolding.Drinks.Length);    // Buy commands are automatically
+                                                                            // added when a new type of
+            var user = new User(depositCommand, exitCommand, buyCommand);   // drink is added to the soda machine.
+                                                                            
             while (true)
             {
-                if (machine.CurrentDisplay == 1)
+                machine.ShowMenu();
+                user.ShowCash();
+                var input = user.Input();
+
+                while (!user.ValidCommand())
                 {
                     machine.ShowMenu();
-                    Console.WriteLine($"\nDin saldo: {account.Cash}kr\n");
-                    var input = Console.ReadLine();
+                    user.ShowCash();
+                    input = user.Input();
+                }
+                if (user.WantToDeposit())
+                {
+                    var depositValue = Convert.ToInt32(input);
 
-                    while (!machine.ValidInput(input))
+                    if ((user.Cash - depositValue) < 0)
                     {
                         machine.ShowMenu();
-                        Console.WriteLine($"\nDin saldo: {account.Cash}kr\n");
-                        input = Console.ReadLine();
+                        user.ShowCash();
+                        Console.WriteLine("Du har ikke nok penger på konto...");
+                        Thread.Sleep(2000);
                     }
-
-                    if (input == "display2") machine.ChangeDisplay();
-
                     else
                     {
-                        var depositValue = Convert.ToInt32(input);
-
-                        if ((account.Cash - depositValue) < 0)
-                        {
-                            machine.ShowMenu();
-                            Console.WriteLine($"\nDin saldo: {account.Cash}kr\n");
-                            Console.WriteLine("\nDu har ikke nok penger på konto...");
-                            Thread.Sleep(2000);
-                        }
-                        else
-                        {
-                            machine.IncreaseCash(depositValue);
-                            account.DecreaseCash(depositValue);
-                            machine.ShowMenu();
-                            Console.WriteLine($"\nDin saldo: {account.Cash}kr\n");
-                        }
+                        machine.IncreaseCash(depositValue);
+                        user.DecreaseCash(depositValue);
+                        machine.ShowMenu();
+                        user.ShowCash();
                     }
                 }
-                if (machine.CurrentDisplay == 2)
+                else if (user.WantToExit())
                 {
-                    machine.ShowMenu();
-                    var input = Console.ReadLine();
+                    user.IncreaseCash(machine.Cash);
 
-                    while (!machine.ValidInput(input))
+                    Console.WriteLine($"\nDu fikk tilbake {machine.Cash}kr");
+                    user.ShowCash();
+                    Console.WriteLine("\nHa en fin dag!");
+                    Thread.Sleep(5000);
+                    break;
+                }
+                else
+                {
+                    var productNum = Convert.ToInt32(input);
+                    var productIndex = (productNum - 1);
+
+                    if (machine.Cash - machine.GetPriceOfProduct(productIndex) < 0)
                     {
                         machine.ShowMenu();
-                        input = Console.ReadLine();
-                    }
-
-                    if (input == "display1") machine.ChangeDisplay();
-
-                    else if (input == "avslutt")
-                    {
-                        account.IncreaseCash(machine.Cash);
-
-                        Console.WriteLine($"\nDu fikk tilbake {machine.Cash}kr");
-                        Console.WriteLine($"Din saldo: {account.Cash}kr");
-                        Console.WriteLine("\nHa en fin dag!");
-                        Thread.Sleep(5000);
-                        break;
+                        user.ShowCash();
+                        Console.WriteLine("Det er ikke lagt inn nok penger i maskinen for å kjøpe dette produktet...");
+                        Thread.Sleep(2000);
                     }
                     else
                     {
-                        var productNum = Convert.ToInt32(input);
-                        var productIndex = (productNum - 1);
+                        var productName = machine.GetNameOfProduct(productIndex);
+                        var productPrice = machine.GetPriceOfProduct(productIndex);
 
-                        if (machine.Cash - machine.GetPriceOfProduct(productIndex) < 0)
-                        {
-                            machine.ShowMenu();
-                            Console.WriteLine("\nDet er ikke lagt inn nok penger i maskinen for å kjøpe dette produktet...");
-                            Thread.Sleep(2000);
-                        }
-                        else
-                        {
-                            var productName = machine.GetNameOfProduct(productIndex);
-                            var productPrice = machine.GetPriceOfProduct(productIndex);
+                        machine.DecreaseCash(productPrice);
 
-                            machine.DecreaseCash(productPrice);
-
-                            machine.ShowMenu();
-                            Console.WriteLine($"\nDu kjøpte en {productName} til {productPrice}kr.");
-                            Thread.Sleep(2000);
-                        }
+                        machine.ShowMenu();
+                        user.ShowCash();
+                        Console.WriteLine($"Du kjøpte en {productName} til {productPrice}kr.");
+                        Thread.Sleep(2000);
                     }
                 }
             }
