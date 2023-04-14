@@ -67,9 +67,8 @@ namespace SodaMachine
             Cash += amount;
         }
 
-        public bool GotEnoughCashFrom(User user)
+        public bool GotEnoughCashForDesiredProduct(int productNum)
         {
-            var productNum = Convert.ToInt32(user.Input);
             return Cash - ProductPrice(productNum) >= 0 ? true : false;
         }
 

@@ -62,8 +62,72 @@ namespace SodaMachine
         public void DepositTo(Machine machine)
         {
             var depositValue = Convert.ToInt32(Input);
-            machine.RecieveCash(depositValue);
-            ReduceCash(depositValue);
+
+            if (HasEnoughCashToDepositDesiredValue())
+            {
+                machine.RecieveCash(depositValue);
+                ReduceCash(depositValue);
+                machine.ShowMenu();
+                ShowCash();
+                machine.SendMessage($"Du la inn {depositValue}kr i brusmaskinen.");
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                machine.ShowMenu();
+                ShowCash();
+                machine.SendMessage("Du har ikke nok penger på konto...");
+                Thread.Sleep(2000);
+            }
+        }
+
+        public void ExitFrom(Machine machine)
+        {
+            RecieveRemainingCashFrom(machine);
+            machine.ShowMenu();
+            ShowCash();
+            machine.SendMessage($"Du fikk tilbake {machine.Cash}kr");
+            ShowCash();
+            machine.SendMessage("Ha en fin dag!");
+            Thread.Sleep(5000);
+        }
+
+        public void BuyProductFrom(Machine machine)
+        {
+            var productNum = Convert.ToInt32(Input);
+            if (machine.GotEnoughCashForDesiredProduct(productNum))
+            {
+                /*machine.ShowMenu();
+                user.ShowCash();
+                machine.SendMessage("Det er ikke lagt inn nok penger i brusmaskinen for å kjøpe dette produktet...");
+                Thread.Sleep(2000);*/
+
+                var productName = machine.ProductName(productNum);
+                var productPrice = machine.ProductPrice(productNum);
+
+                RecieveProductFrom(machine);
+                machine.ShowMenu();
+                ShowCash();
+                machine.SendMessage($"Du kjøpte en {productName} til {productPrice}kr.");
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                machine.ShowMenu();
+                ShowCash();
+                machine.SendMessage("Det er ikke lagt inn nok penger i brusmaskinen for å kjøpe dette produktet...");
+                Thread.Sleep(2000);
+
+                /*var productNum = Convert.ToInt32(user.Input);
+                var productName = machine.ProductName(productNum);
+                var productPrice = machine.ProductPrice(productNum);
+
+                user.RecieveProductFrom(machine);
+                machine.ShowMenu();
+                user.ShowCash();
+                machine.SendMessage($"Du kjøpte en {productName} til {productPrice}kr.");
+                Thread.Sleep(2000);*/
+            }
         }
 
         public bool HasEnoughCashToDepositDesiredValue()
