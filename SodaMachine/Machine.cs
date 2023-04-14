@@ -10,8 +10,8 @@ namespace SodaMachine
 {
     internal class Machine
     {
-        private StockHolding _stockHolding;
         public int Cash { get; private set; }
+        private StockHolding _stockHolding;
 
         public Machine(StockHolding stockHolding)
         {
@@ -28,14 +28,16 @@ namespace SodaMachine
             }
         }
 
-        public int GetPriceOfProduct(int index)
+        public int ProductPrice(int productNum)
         {
-            return _stockHolding.Drinks[index].Price;
+            var productIndex = productNum - 1;
+            return _stockHolding.Drinks[productIndex].Price;
         }
 
-        public string GetNameOfProduct(int index)
+        public string ProductName(int productNum)
         {
-            return _stockHolding.Drinks[index].Name;
+            var productIndex = productNum - 1;
+            return _stockHolding.Drinks[productIndex].Name;
         }
 
         public void ShowMenu()
@@ -47,15 +49,15 @@ namespace SodaMachine
             ShowInstruction();
         }
 
-        public void ShowInstruction()
+        private void ShowInstruction()
         {
             Console.WriteLine("\n----- INSTRUKSJON -----\n");
-            Console.WriteLine("- Skriv inn en kronemynt (1, 5, 10, 20) for å legge inn penger i brusmaskinen.");
+            Console.WriteLine("- Skriv inn en gyldig kronemynt (1, 5, 10, 20) for å legge inn penger i brusmaskinen.");
             Console.WriteLine("- Skriv inn nummeret på produktet du vil kjøpe.");
             Console.WriteLine("- Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.\n");
         }
 
-        public void ReduceCash(int amount)
+        private void ReduceCash(int amount)
         {
             Cash -= amount;
         }
@@ -63,6 +65,23 @@ namespace SodaMachine
         public void RecieveCash(int amount)
         {
             Cash += amount;
+        }
+
+        public bool GotEnoughCashFrom(User user)
+        {
+            var productNum = Convert.ToInt32(user.Input);
+            return Cash - ProductPrice(productNum) >= 0 ? true : false;
+        }
+
+        public void SendMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        public void GiveProduct(int productNum)
+        {
+            var productPrice = ProductPrice(productNum);
+            ReduceCash(productPrice);
         }
     }
 }

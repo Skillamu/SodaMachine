@@ -10,9 +10,9 @@ namespace SodaMachine
     {
         public string Input { get; private set; }
         public int Cash { get; private set; }
-        public DepositCommand _depositCommand;
-        public ExitCommand _exitCommand;
-        public BuyCommand _buyCommand;
+        private DepositCommand _depositCommand;
+        private ExitCommand _exitCommand;
+        private BuyCommand _buyCommand;
 
         public User(DepositCommand depositCommand, ExitCommand exitCommand, BuyCommand buyCommand)
         {
@@ -22,12 +22,12 @@ namespace SodaMachine
             _buyCommand = buyCommand;
         }
 
-        public void ReduceCash(int amount)
+        private void ReduceCash(int amount)
         {
             Cash -= amount;
         }
 
-        public void RecieveCash(int amount)
+        private void RecieveCash(int amount)
         {
             Cash += amount;
         }
@@ -57,9 +57,30 @@ namespace SodaMachine
             return _depositCommand.IsValid(Input) ? true :
                       _exitCommand.IsValid(Input) ? true :
                        _buyCommand.IsValid(Input) ? true : false;
+        }
 
+        public void DepositTo(Machine machine)
+        {
+            var depositValue = Convert.ToInt32(Input);
+            machine.RecieveCash(depositValue);
+            ReduceCash(depositValue);
+        }
 
+        public bool HasEnoughCashToDepositDesiredValue()
+        {
+            var depositValue = Convert.ToInt32(Input);
+            return Cash - depositValue >= 0 ? true : false;
+        }
 
+        public void RecieveProductFrom(Machine machine)
+        {
+            var productNum = Convert.ToInt32(Input);
+            machine.GiveProduct(productNum);
+        }
+
+        public void RecieveRemainingCashFrom(Machine machine)
+        {
+            RecieveCash(machine.Cash);
         }
     }
 }

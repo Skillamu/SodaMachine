@@ -30,57 +30,53 @@ namespace SodaMachine
                 }
                 if (user.WantToDeposit())
                 {
-                    var depositValue = Convert.ToInt32(user.Input);
-
-                    if ((user.Cash - depositValue) < 0)
+                    if (!user.HasEnoughCashToDepositDesiredValue())
                     {
                         machine.ShowMenu();
                         user.ShowCash();
-                        Console.WriteLine("Du har ikke nok penger på konto...");
+                        machine.SendMessage("Du har ikke nok penger på konto...");
                         Thread.Sleep(2000);
                     }
                     else
                     {
-                        machine.RecieveCash(depositValue);
-                        user.ReduceCash(depositValue);
+                        user.DepositTo(machine);
                         machine.ShowMenu();
                         user.ShowCash();
-                        Console.WriteLine($"Du la inn {depositValue}kr i brusmaskinen.");
+                        var depositValue = user.Input;
+                        machine.SendMessage($"Du la inn {depositValue}kr i brusmaskinen.");
                         Thread.Sleep(2000);
                     }
                 }
                 else if (user.WantToExit())
                 {
+                    user.RecieveRemainingCashFrom(machine);
                     machine.ShowMenu();
                     user.ShowCash();
-                    user.RecieveCash(machine.Cash);
-                    Console.WriteLine($"Du fikk tilbake {machine.Cash}kr");
+                    machine.SendMessage($"Du fikk tilbake {machine.Cash}kr");
                     user.ShowCash();
-                    Console.WriteLine("Ha en fin dag!");
+                    machine.SendMessage("Ha en fin dag!");
                     Thread.Sleep(5000);
                     break;
                 }
                 else
                 {
-                    var productNum = Convert.ToInt32(user.Input);
-                    var productIndex = (productNum - 1);
-
-                    if (machine.Cash - machine.GetPriceOfProduct(productIndex) < 0)
+                    if (!machine.GotEnoughCashFrom(user))
                     {
                         machine.ShowMenu();
                         user.ShowCash();
-                        Console.WriteLine("Det er ikke lagt inn nok penger i brusmaskinen for å kjøpe dette produktet...");
+                        machine.SendMessage("Det er ikke lagt inn nok penger i brusmaskinen for å kjøpe dette produktet...");
                         Thread.Sleep(2000);
                     }
                     else
                     {
-                        var productName = machine.GetNameOfProduct(productIndex);
-                        var productPrice = machine.GetPriceOfProduct(productIndex);
+                        var productNum = Convert.ToInt32(user.Input);
+                        var productName = machine.ProductName(productNum);
+                        var productPrice = machine.ProductPrice(productNum);
 
-                        machine.ReduceCash(productPrice);
+                        user.RecieveProductFrom(machine);
                         machine.ShowMenu();
                         user.ShowCash();
-                        Console.WriteLine($"Du kjøpte en {productName} til {productPrice}kr.");
+                        machine.SendMessage($"Du kjøpte en {productName} til {productPrice}kr.");
                         Thread.Sleep(2000);
                     }
                 }

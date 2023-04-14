@@ -8,7 +8,7 @@ namespace SodaMachine
 {
     internal class BuyCommand : Command
     {
-        public int _stockHoldingDrinksLength;
+        private int _stockHoldingDrinksLength;
 
         public BuyCommand(int stockHoldingDrinksLength)
         {
