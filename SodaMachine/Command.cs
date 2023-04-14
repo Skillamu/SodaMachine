@@ -8,6 +8,8 @@ namespace SodaMachine
 {
     abstract internal class Command
     {
-        public abstract string[] GetCommands();
+        public abstract string[] ArrayOfValidCommands();
+
+        public abstract bool IsValid(string input);
     }
 }

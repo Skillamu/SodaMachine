@@ -38,12 +38,6 @@ namespace SodaMachine
             return _stockHolding.Drinks[index].Name;
         }
 
-        /*public void ReduceQuantityOfProduct(int index)
-        {
-            Drinks[index].ReduceQuantity();
-            Console.WriteLine($"Antall igjen: {Drinks[index].Quantity}");
-        }*/
-
         public void ShowMenu()
         {
             Console.Clear();
@@ -61,40 +55,14 @@ namespace SodaMachine
             Console.WriteLine("- Skriv inn avslutt for å avslutte og få de resterende pengene tilbake.\n");
         }
 
-        public void DecreaseCash(int amount)
+        public void ReduceCash(int amount)
         {
             Cash -= amount;
         }
 
-        public void IncreaseCash(int amount)
+        public void RecieveCash(int amount)
         {
             Cash += amount;
         }
-
-        /*public bool ValidInput(string input)
-        {
-            var validInputs = GetArrayOfValidInputsForCurrentDisplay();
-
-            return validInputs.Contains(input) ? true : false;
-        }
-
-        private string[] GetArrayOfValidInputsForCurrentDisplay()
-        {
-            var validInputs = new List<string>()
-            {
-                "20",
-                "10",
-                "5",
-                "1",
-                "avslutt",
-            };
-
-            for (int i = 0; i < _stockHolding.Drinks.Length; i++)
-            {
-                validInputs.Add($"0{i + 1}");
-            }
-
-            return validInputs.ToArray();
-        }*/
     }
 }

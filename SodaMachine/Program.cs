@@ -20,17 +20,17 @@ namespace SodaMachine
             {
                 machine.ShowMenu();
                 user.ShowCash();
-                var input = user.Input();
+                user.SelectInput();
 
                 while (!user.ValidCommand())
                 {
                     machine.ShowMenu();
                     user.ShowCash();
-                    input = user.Input();
+                    user.SelectInput();
                 }
                 if (user.WantToDeposit())
                 {
-                    var depositValue = Convert.ToInt32(input);
+                    var depositValue = Convert.ToInt32(user.Input);
 
                     if ((user.Cash - depositValue) < 0)
                     {
@@ -41,32 +41,35 @@ namespace SodaMachine
                     }
                     else
                     {
-                        machine.IncreaseCash(depositValue);
-                        user.DecreaseCash(depositValue);
+                        machine.RecieveCash(depositValue);
+                        user.ReduceCash(depositValue);
                         machine.ShowMenu();
                         user.ShowCash();
+                        Console.WriteLine($"Du la inn {depositValue}kr i brusmaskinen.");
+                        Thread.Sleep(2000);
                     }
                 }
                 else if (user.WantToExit())
                 {
-                    user.IncreaseCash(machine.Cash);
-
-                    Console.WriteLine($"\nDu fikk tilbake {machine.Cash}kr");
+                    machine.ShowMenu();
                     user.ShowCash();
-                    Console.WriteLine("\nHa en fin dag!");
+                    user.RecieveCash(machine.Cash);
+                    Console.WriteLine($"Du fikk tilbake {machine.Cash}kr");
+                    user.ShowCash();
+                    Console.WriteLine("Ha en fin dag!");
                     Thread.Sleep(5000);
                     break;
                 }
                 else
                 {
-                    var productNum = Convert.ToInt32(input);
+                    var productNum = Convert.ToInt32(user.Input);
                     var productIndex = (productNum - 1);
 
                     if (machine.Cash - machine.GetPriceOfProduct(productIndex) < 0)
                     {
                         machine.ShowMenu();
                         user.ShowCash();
-                        Console.WriteLine("Det er ikke lagt inn nok penger i maskinen for å kjøpe dette produktet...");
+                        Console.WriteLine("Det er ikke lagt inn nok penger i brusmaskinen for å kjøpe dette produktet...");
                         Thread.Sleep(2000);
                     }
                     else
@@ -74,8 +77,7 @@ namespace SodaMachine
                         var productName = machine.GetNameOfProduct(productIndex);
                         var productPrice = machine.GetPriceOfProduct(productIndex);
 
-                        machine.DecreaseCash(productPrice);
-
+                        machine.ReduceCash(productPrice);
                         machine.ShowMenu();
                         user.ShowCash();
                         Console.WriteLine($"Du kjøpte en {productName} til {productPrice}kr.");

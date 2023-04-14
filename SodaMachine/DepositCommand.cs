@@ -8,16 +8,16 @@ namespace SodaMachine
 {
     internal class DepositCommand : Command
     {
-        public override string[] GetCommands()
+        public override string[] ArrayOfValidCommands()
         {
             var validCommands = new[] { "20", "10", "5", "1" };
             return validCommands;
         }
 
-        public bool IsValid(string command)
+        public override bool IsValid(string input)
         {
-            var depositCommands = GetCommands();
-            return depositCommands.Contains(command) ? true : false;
+            var depositCommands = ArrayOfValidCommands();
+            return depositCommands.Contains(input) ? true : false;
         }
     }
 }

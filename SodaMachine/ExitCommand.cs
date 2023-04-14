@@ -8,16 +8,16 @@ namespace SodaMachine
 {
     internal class ExitCommand : Command
     {
-        public override string[] GetCommands()
+        public override string[] ArrayOfValidCommands()
         {
             var validCommands = new[] { "avslutt" };
             return validCommands;
         }
 
-        public bool IsValid(string command)
+        public override bool IsValid(string input)
         {
-            var exitCommand = GetCommands();
-            return exitCommand.Contains(command) ? true : false;
+            var exitCommand = ArrayOfValidCommands();
+            return exitCommand.Contains(input) ? true : false;
         }
     }
 }

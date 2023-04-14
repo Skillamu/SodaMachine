@@ -8,7 +8,7 @@ namespace SodaMachine
 {
     internal class User
     {
-        public string _input;
+        public string Input { get; private set; }
         public int Cash { get; private set; }
         public DepositCommand _depositCommand;
         public ExitCommand _exitCommand;
@@ -22,12 +22,12 @@ namespace SodaMachine
             _buyCommand = buyCommand;
         }
 
-        public void DecreaseCash(int amount)
+        public void ReduceCash(int amount)
         {
             Cash -= amount;
         }
 
-        public void IncreaseCash(int amount)
+        public void RecieveCash(int amount)
         {
             Cash += amount;
         }
@@ -39,25 +39,24 @@ namespace SodaMachine
 
         public bool WantToDeposit()
         {
-            return _depositCommand.IsValid(_input) ? true : false;
+            return _depositCommand.IsValid(Input) ? true : false;
         }
 
         public bool WantToExit()
         {
-            return _exitCommand.IsValid(_input) ? true : false;
+            return _exitCommand.IsValid(Input) ? true : false;
         }
 
-        public string Input()
+        public void SelectInput()
         {
-            _input = Console.ReadLine();
-            return _input;
+            Input = Console.ReadLine();
         }
 
         public bool ValidCommand()
         {
-            return _depositCommand.IsValid(_input) ? true :
-                      _exitCommand.IsValid(_input) ? true :
-                       _buyCommand.IsValid(_input) ? true : false;
+            return _depositCommand.IsValid(Input) ? true :
+                      _exitCommand.IsValid(Input) ? true :
+                       _buyCommand.IsValid(Input) ? true : false;
 
 
 

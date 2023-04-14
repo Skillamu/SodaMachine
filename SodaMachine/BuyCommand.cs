@@ -15,7 +15,7 @@ namespace SodaMachine
             _stockHoldingDrinksLength = stockHoldingDrinksLength;
         }
 
-        public override string[] GetCommands()
+        public override string[] ArrayOfValidCommands()
         {
             var validCommands = new List<string>();
 
@@ -27,10 +27,10 @@ namespace SodaMachine
             return validCommands.ToArray();
         }
 
-        public bool IsValid(string command)
+        public override bool IsValid(string input)
         {
-            var buyCommands = GetCommands();
-            return buyCommands.Contains(command) ? true : false;
+            var buyCommands = ArrayOfValidCommands();
+            return buyCommands.Contains(input) ? true : false;
         }
     }
 }

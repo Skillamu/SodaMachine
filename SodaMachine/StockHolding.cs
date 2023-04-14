@@ -18,6 +18,7 @@ namespace SodaMachine
                 new Drink("Fanta", 5),
                 new Drink("Villa", 10),
                 new Drink("Pepsi", 30),
+                new Drink("Solo", 50),
             };
         }
     }
