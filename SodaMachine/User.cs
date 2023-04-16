@@ -25,7 +25,7 @@ namespace SodaMachine
         public void ShowCash()
             => Console.WriteLine($"\nDin saldo: {_cash}kr\n");
 
-        public void ChooseInput() 
+        public void ChooseCommand() 
             => ChosenCommand = Console.ReadLine();
 
         public void DepositTo(Machine machine)

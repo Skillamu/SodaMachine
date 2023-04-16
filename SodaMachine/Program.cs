@@ -23,7 +23,7 @@ namespace SodaMachine
 
                 machine.ShowMenu();
                 user.ShowCash();
-                user.ChooseInput();
+                user.ChooseCommand();
 
                 var selectedCmd = cmds.SingleOrDefault(
                     cmd => cmd.Exists(user.ChosenCommand));
