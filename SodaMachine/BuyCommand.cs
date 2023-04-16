@@ -8,29 +8,23 @@ namespace SodaMachine
 {
     internal class BuyCommand : Command
     {
-        private int _stockHoldingDrinksLength;
+        private User _user;
+        private Machine _machine;
 
-        public BuyCommand(int stockHoldingDrinksLength)
+        public BuyCommand(User user, Machine machine)
+            : base(new string[] { "01", "02", "03", "04", "05" })
         {
-            _stockHoldingDrinksLength = stockHoldingDrinksLength;
+            _user = user;
+            _machine = machine;
         }
 
-        public override string[] ArrayOfValidCommands()
+        public override void Run()
         {
-            var validCommands = new List<string>();
+            _machine.ShowMenu();
+            _user.ShowCash();
 
-            for (int i = 0; i < _stockHoldingDrinksLength; i++)
-            {
-                validCommands.Add($"0{i + 1}");
-            }
-
-            return validCommands.ToArray();
-        }
-
-        public override bool IsValid(string input)
-        {
-            var buyCommands = ArrayOfValidCommands();
-            return buyCommands.Contains(input) ? true : false;
+            _user.BuyProductFrom(_machine);
+            Thread.Sleep(2000);
         }
     }
 }

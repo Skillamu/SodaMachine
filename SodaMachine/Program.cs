@@ -7,41 +7,28 @@ namespace SodaMachine
     {
         static void Main(string[] args)
         {
-            var stockHolding = new StockHolding();
-            var machine = new Machine(stockHolding);
+            var user = new User();
+            var machine = new Machine();
 
-            var depositCommand = new DepositCommand();
-            var exitCommand = new ExitCommand();
-            var buyCommand = new BuyCommand(stockHolding.Drinks.Length);    // Buy commands are automatically
-                                                                            // added when a new type of
-            var user = new User(depositCommand, exitCommand, buyCommand);   // drink is added to the soda machine.
-                                                                            
+            var cmds = new Command[]
+            {
+                new DepositCommand(user, machine),
+                new ExitCommand(user, machine),
+                new BuyCommand(user, machine),
+            };
+
             while (true)
             {
+                Console.Clear();
+
                 machine.ShowMenu();
                 user.ShowCash();
-                user.SelectInput();
+                user.ChooseInput();
 
-                while (!user.ValidCommand())
-                {
-                    machine.ShowMenu();
-                    user.ShowCash();
-                    user.SelectInput();
-                }
+                var selectedCmd = cmds.SingleOrDefault(
+                    cmd => cmd.Exists(user.ChosenCommand));
 
-                if (user.WantToDeposit())
-                {
-                    user.DepositTo(machine);
-                }
-                else if (user.WantToExit())
-                {
-                    user.ExitFrom(machine);
-                    break;
-                }
-                else
-                {
-                    user.BuyProductFrom(machine);
-                }
+                selectedCmd?.Run();
             }
         }
     }

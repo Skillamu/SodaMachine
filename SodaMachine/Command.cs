@@ -8,8 +8,16 @@ namespace SodaMachine
 {
     abstract internal class Command
     {
-        public abstract string[] ArrayOfValidCommands();
+        private string[] _commands;
 
-        public abstract bool IsValid(string input);
+        public Command(string[] commands)
+        {
+            _commands = commands;
+        }
+
+        public abstract void Run();
+
+        public bool Exists(string cmdFromUser)
+            => _commands.Any(cmd => cmd.Equals(cmdFromUser));
     }
 }

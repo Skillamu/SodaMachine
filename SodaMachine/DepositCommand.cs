@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,16 +9,23 @@ namespace SodaMachine
 {
     internal class DepositCommand : Command
     {
-        public override string[] ArrayOfValidCommands()
+        private User _user;
+        private Machine _machine;
+
+        public DepositCommand(User user, Machine machine)
+            : base(new string[] { "20", "10", "5", "1" })
         {
-            var validCommands = new[] { "20", "10", "5", "1" };
-            return validCommands;
+            _user = user;
+            _machine = machine;
         }
 
-        public override bool IsValid(string input)
+        public override void Run()
         {
-            var depositCommands = ArrayOfValidCommands();
-            return depositCommands.Contains(input) ? true : false;
+            _machine.ShowMenu();
+            _user.ShowCash();
+
+            _user.DepositTo(_machine);
+            Thread.Sleep(2000);
         }
     }
 }
