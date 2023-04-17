@@ -12,7 +12,7 @@ namespace SodaMachine
         private Machine _machine;
 
         public BuyCommand(User user, Machine machine)
-            : base(new string[] { "01", "02", "03", "04", "05" })
+            : base("01", "02", "03", "04", "05")
         {
             _user = user;
             _machine = machine;

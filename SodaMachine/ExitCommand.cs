@@ -12,7 +12,7 @@ namespace SodaMachine
         private Machine _machine;
 
         public ExitCommand(User user, Machine machine)
-            : base(new string[] { "avslutt" })
+            : base("avslutt")
         {
             _user = user;
             _machine = machine;

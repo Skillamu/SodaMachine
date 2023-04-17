@@ -13,7 +13,7 @@ namespace SodaMachine
         private Machine _machine;
 
         public DepositCommand(User user, Machine machine)
-            : base(new string[] { "20", "10", "5", "1" })
+            : base("20", "10", "5", "1")
         {
             _user = user;
             _machine = machine;

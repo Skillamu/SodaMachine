@@ -10,7 +10,7 @@ namespace SodaMachine
     {
         private string[] _commands;
 
-        public Command(string[] commands)
+        public Command(params string[] commands)
         {
             _commands = commands;
         }
